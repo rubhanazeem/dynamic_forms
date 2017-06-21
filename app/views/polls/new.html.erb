@@ -1,0 +1,54 @@
+<%= form_for(@poll, remote: true, format: :json, html: {class: :poll_form} ) do |f| %>
+
+  <div id="error_explanation" style='display:none;'>
+    <ul>
+      <% if @poll.errors.any? %>
+        <% @poll.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="fields">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %><br>
+    <div id="poll_choices">
+      <%= label_tag "Choice" %>
+      <br>
+      <%= text_field_tag "choices[]" %>
+      <br>
+      <%= label_tag "Choice" %>
+      <br>
+      <%= text_field_tag "choices[]" %>
+      <br>
+      <%= label_tag "Choice" %>
+      <br>
+      <%= text_field_tag "choices[]" %>
+      <br>
+    </div>
+    <a href="javascript:void(0);" id="addNewChoice">Add New Choice</a>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+
+<% end %>
+
+<div class="success-message">
+</div>
+
+<div style="display: none;" id="new_choice_form">
+    <%= render partial: "poll_choice", locals: {poll: false} %>
+</div>
+
+<script type="text/javascript">
+  $("#addNewChoice").on("click", function() {
+    return $("#poll_choices").append($("#new_choice_form").html());
+  });
+
+  this.removeChoice = function(element) {
+    return element.parent().remove();
+  };
+</script>
